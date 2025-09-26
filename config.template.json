@@ -1,0 +1,96 @@
+{
+  "_comment": "Azure AI Services Model Capacity Configuration Template",
+  "_instructions": [
+    "1. Copy this file to 'config.json'",
+    "2. Replace placeholder values with your actual Azure subscription details",
+    "3. Update model versions as needed (check Azure documentation for latest versions)",
+    "4. Ensure you have appropriate permissions to query Azure AI Services capacity"
+  ],
+  
+  "subscription_id": "YOUR_SUBSCRIPTION_ID_HERE",
+  "subscription_name": "YOUR_SUBSCRIPTION_NAME_HERE",
+  
+  "models": {
+    "gpt-4o": {
+      "version": "2024-05-13",
+      "description": "GPT-4 Omni model - latest flagship model"
+    },
+    "gpt-4": {
+      "version": "2024-02-15-preview",
+      "description": "GPT-4 standard model"
+    },
+    "gpt-4-32k": {
+      "version": "2024-02-15-preview", 
+      "description": "GPT-4 with 32K context window"
+    },
+    "gpt-35-turbo": {
+      "version": "2024-02-15-preview",
+      "description": "GPT-3.5 Turbo model"
+    },
+    "gpt-35-turbo-16k": {
+      "version": "2024-02-15-preview",
+      "description": "GPT-3.5 Turbo with 16K context window"
+    },
+    "o1-preview": {
+      "version": "2024-09-12",
+      "description": "O1 Preview reasoning model"
+    },
+    "o1-mini": {
+      "version": "2024-09-12", 
+      "description": "O1 Mini reasoning model"
+    },
+    "o3-mini": {
+      "version": "2025-01-31",
+      "description": "O3 Mini reasoning model"
+    },
+    "o4-mini": {
+      "version": "2025-04-16",
+      "description": "O4 Mini reasoning model"
+    },
+    "text-embedding-ada-002": {
+      "version": "2",
+      "description": "Text embedding model"
+    },
+    "text-embedding-3-small": {
+      "version": "1",
+      "description": "Small text embedding model"
+    },
+    "text-embedding-3-large": {
+      "version": "1", 
+      "description": "Large text embedding model"
+    },
+    "dall-e-3": {
+      "version": "3.0",
+      "description": "DALL-E 3 image generation model"
+    },
+    "whisper": {
+      "version": "2023-09-01-preview",
+      "description": "Whisper speech-to-text model"
+    },
+    "tts": {
+      "version": "2024-02-15-preview",
+      "description": "Text-to-speech model"
+    }
+  },
+
+  "api_settings": {
+    "timeout_seconds": 30,
+    "max_retries": 3,
+    "retry_delay_seconds": 1,
+    "base_url": "https://management.azure.com",
+    "api_version": "2024-04-01-preview"
+  },
+
+  "dashboard_settings": {
+    "default_sku_filter": "GlobalStandard",
+    "cache_timeout_minutes": 5,
+    "max_regions_display": 50,
+    "enable_debug_logging": false
+  },
+
+  "authentication": {
+    "_note": "Uses Azure DefaultAzureCredential - ensure you are logged in via 'az login'",
+    "method": "DefaultAzureCredential",
+    "tenant_id": "OPTIONAL_TENANT_ID_IF_NEEDED"
+  }
+}

@@ -1,0 +1,288 @@
+# Azure AI Services Model Capacity Dashboard - .gitignore
+
+# =============================================================================
+# Configuration and Secrets
+# =============================================================================
+config.json
+*.config.json
+secrets.json
+.env
+.env.local
+.env.production
+.env.staging
+
+# Azure credentials and tokens
+.azure/
+*.json.backup
+*-credentials.json
+
+# =============================================================================
+# Python
+# =============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+capacity-env/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# =============================================================================
+# Streamlit
+# =============================================================================
+.streamlit/
+*.streamlit/
+
+# =============================================================================
+# Data and Output Files
+# =============================================================================
+# Capacity results and exports - NEVER COMMIT THESE
+model_capacity_results.json
+*_capacity_results.json
+capacity_results_*.json
+azure_capacity_*.csv
+azure_capacity_*.xlsx
+azure_regional_capacity_*.csv
+azure_regional_capacity_*.json
+exports/
+downloads/
+results/
+
+# Log files - NEVER COMMIT THESE
+azure_model_capacity.log
+streamlit_*.log
+*.log
+logs/
+log_*.txt
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# =============================================================================
+# IDE and Editor Files
+# =============================================================================
+# VS Code
+.vscode/
+!.vscode/settings.json.template
+!.vscode/launch.json.template
+
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# OS Generated Files
+# =============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Package Managers
+# =============================================================================
+# npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================================================================
+# Backup and Archive Files
+# =============================================================================
+*.bak
+*.backup
+*.old
+*.orig
+backup_*
+*_backup.*
+*.zip
+*.tar.gz
+*.rar
+
+# =============================================================================
+# Documentation Build Files
+# =============================================================================
+docs/_build/
+docs/build/
+
+# =============================================================================
+# Custom Project Files
+# =============================================================================
+# Dashboard screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Custom scripts (if containing sensitive info)
+custom_*.py
+test_*.py
+debug_*.py
+
+# Performance profiling
+*.prof
+*.profile
+
+# =============================================================================
+# Git specific
+# =============================================================================
+# Ignore everything in .git except hooks
+.git/
+!.git/hooks/
+
+# Ignore merge conflict files
+*.orig
+*.rej
