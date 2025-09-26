@@ -35,9 +35,10 @@ def run_streamlit_app():
     print("-" * 50)
     
     try:
-        # Run Streamlit app
+        # Run Streamlit app from portal folder
+        portal_app = os.path.join("portal", "app.py")
         subprocess.run([
-            sys.executable, "-m", "streamlit", "run", "streamlit_app.py",
+            sys.executable, "-m", "streamlit", "run", portal_app,
             "--server.port=8501",
             "--server.address=localhost",
             "--browser.gatherUsageStats=false"

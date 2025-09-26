@@ -19,6 +19,12 @@ import asyncio
 from datetime import datetime
 import numpy as np
 from io import BytesIO
+import sys
+import os
+
+# Add the src directory to the Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src'))
+
 from azure_model_capacity_client import AzureModelCapacityClient, ConfigurationError, AzureError
 
 
@@ -86,7 +92,9 @@ st.markdown("""
 def load_capacity_data():
     """Load capacity data from Azure API with caching."""
     try:
-        with AzureModelCapacityClient("config.json") as client:
+        # Look for config.json in the parent directory
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        with AzureModelCapacityClient(config_path) as client:
             return client.get_all_models_capacity()
     except Exception as e:
         st.error(f"Error loading capacity data: {str(e)}")
