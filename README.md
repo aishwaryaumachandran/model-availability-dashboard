@@ -184,10 +184,6 @@ For email reporting functionality, add email settings to `config.json`:
 4. Test thoroughly with real Azure data
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🆘 Support
 
 For issues and questions:
