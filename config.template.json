@@ -92,5 +92,16 @@
     "_note": "Uses Azure DefaultAzureCredential - ensure you are logged in via 'az login'",
     "method": "DefaultAzureCredential",
     "tenant_id": "OPTIONAL_TENANT_ID_IF_NEEDED"
+  },
+
+  "email": {
+    "_note": "Azure Communication Service email configuration",
+    "connection_string": "YOUR_AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING",
+    "sender_email": "your-sender@your-domain.com",
+    "default_recipients": [
+      "recipient1@company.com",
+      "recipient2@company.com"
+    ],
+    "subject_prefix": "[Azure Model Capacity]"
   }
 }

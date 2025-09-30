@@ -26,6 +26,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src'))
 
 from azure_model_capacity_client import AzureModelCapacityClient, ConfigurationError, AzureError
+from azure_email_service import AzureEmailService, load_email_config_from_file, EmailConfig
 
 
 # Page configuration
@@ -83,6 +84,32 @@ st.markdown("""
     .stTabs [aria-selected="true"] {
         background-color: #0066cc;
         color: white;
+    }
+    
+    .email-button {
+        background: linear-gradient(45deg, #0066cc, #0052a3);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        margin: 10px 0;
+    }
+    
+    .email-button:hover {
+        background: linear-gradient(45deg, #0052a3, #003d82);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,102,204,0.3);
+    }
+    
+    .email-section {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #0066cc;
+        margin: 20px 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -259,6 +286,76 @@ def apply_table_styling(df):
     return styled_df
 
 
+def send_email_report(raw_data, all_skus, recipients=None):
+    """
+    Send email report with capacity data for all SKUs.
+    
+    Args:
+        raw_data: Raw capacity data
+        all_skus: List of all available SKU types
+        recipients: Optional list of recipient emails
+    
+    Returns:
+        Tuple of (success: bool, message: str)
+    """
+    try:
+        # Look for config.json in the parent directory
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        
+        # Load email configuration with validation
+        try:
+            email_config = load_email_config_from_file(config_path)
+        except Exception as config_error:
+            return False, f"Email configuration error: {str(config_error)}"
+        
+        # Prepare capacity data for each SKU
+        capacity_data = {}
+        summary_stats = {
+            'total_sku_types': len(all_skus),
+            'total_regions': set(),
+            'total_models': set()
+        }
+        
+        for sku in all_skus:
+            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku)
+            
+            if processed_data:
+                df = create_capacity_table(processed_data, model_versions)
+                if not df.empty:
+                    capacity_data[sku] = df
+                    
+                    # Update summary stats
+                    summary_stats['total_regions'].update(df['Region'].tolist())
+                    model_cols = [col for col in df.columns if col != 'Region']
+                    summary_stats['total_models'].update(model_cols)
+        
+        # Convert sets to counts
+        summary_stats['total_regions'] = len(summary_stats['total_regions'])
+        summary_stats['total_models'] = len(summary_stats['total_models'])
+        
+        # Send email
+        try:
+            with AzureEmailService(email_config) as email_service:
+                success = email_service.send_capacity_report(
+                    capacity_data=capacity_data,
+                    recipients=recipients
+                )
+                
+                if success:
+                    return True, "Email report sent successfully!"
+                else:
+                    return False, "Failed to send email report. Check logs for details."
+        except Exception as send_error:
+            return False, f"Error during email sending: {str(send_error)}"
+                
+    except FileNotFoundError:
+        return False, "Configuration file not found. Please ensure config.json exists."
+    except KeyError as e:
+        return False, f"Email configuration missing: {str(e)}"
+    except Exception as e:
+        return False, f"Error sending email: {str(e)}"
+
+
 def main():
     """Main Streamlit application."""
     # Header
@@ -418,44 +515,15 @@ def main():
                         
                         # Export functionality
                         st.markdown("---")
-                        col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
+                        col1, col2, col3 = st.columns([2, 2, 2])
                         
                         with col1:
-                            csv = df.to_csv(index=False)
-                            st.download_button(
-                                label=f"Download {sku} CSV",
-                                data=csv,
-                                file_name=f"azure_capacity_{sku}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                                mime="text/csv",
-                                key=f"csv_download_{sku}"
-                            )
-                        
-                        with col2:
-                            # Create filtered raw data for JSON export
-                            filtered_raw_data = {}
-                            for model, results in raw_data.items():
-                                # Filter by SKU and check if any model version from this model is selected
-                                sku_filtered_results = [r for r in results if r.sku_name == sku]
-                                model_versions_for_model = [mv for mv in selected_model_versions if mv.startswith(model)]
-                                if model_versions_for_model and sku_filtered_results:
-                                    filtered_raw_data[model] = sku_filtered_results
-                            
-                            json_data = json.dumps(filtered_raw_data, indent=2, default=str)
-                            st.download_button(
-                                label=f"Download {sku} JSON",
-                                data=json_data,
-                                file_name=f"azure_capacity_{sku}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                                mime="application/json",
-                                key=f"json_download_{sku}"
-                            )
-                        
-                        with col3:
                             # Comprehensive Excel download (only show on first tab to avoid duplicates)
                             if i == 0:  # Only show on the first tab
                                 try:
                                     excel_data = create_comprehensive_excel(raw_data, all_skus)
                                     st.download_button(
-                                        label="Download All SKUs Excel",
+                                        label="📊 Download All SKUs Excel",
                                         data=excel_data,
                                         file_name=f"azure_capacity_all_skus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -465,7 +533,22 @@ def main():
                                     st.error(f"Excel generation failed: {str(e)}")
                             else:
                                 st.write("")  # Empty space for alignment
-                        with col4:
+                        
+                        with col2:
+                            # Email button (only show on first tab to avoid duplicates)
+                            if i == 0:  # Only show on the first tab
+                                if st.button("📧 Email report to the default recipients", type="secondary", help="Send capacity report to default recipients", key="email_button_main"):
+                                    with st.spinner("Sending email report..."):
+                                        success, message = send_email_report(raw_data, all_skus, recipients=None)
+                                    
+                                    if success:
+                                        st.success(message)
+                                    else:
+                                        st.error(message)
+                            else:
+                                st.write("")  # Empty space for alignment
+                        
+                        with col3:
                             st.caption(f"**{sku}**: {len(filtered_data)} regions • Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                             
                     else:

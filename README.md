@@ -38,7 +38,14 @@ model-availability-dashboard/
 - **Individual SKU JSON**: Raw API data per capacity type
 - **Comprehensive Excel**: All SKUs in separate sheets with summary
 
-### 🔒 **Security & Best Practices**
+### � **Email Reporting**
+- **Professional Email Reports**: Send capacity reports via Azure Communication Service
+- **HTML Formatted Tables**: Color-coded capacity data with professional styling
+- **Flexible Recipients**: Configure default recipients or specify custom ones
+- **Summary Statistics**: Include overview of total SKUs, regions, and models
+- **Automated Scheduling**: Ready for integration with task schedulers
+
+### �🔒 **Security & Best Practices**
 - **Secure Configuration**: Template-based config with gitignore protection
 - **Azure Authentication**: DefaultAzureCredential with Azure CLI integration
 - **Enterprise-Ready**: Professional styling suitable for business presentations
@@ -95,6 +102,30 @@ Edit `config.json` with your Azure details:
 }
 ```
 
+### Email Configuration (Optional)
+For email reporting functionality, add email settings to `config.json`:
+
+```json
+{
+  "email": {
+    "connection_string": "endpoint=https://your-service.communication.azure.com/;accesskey=your-key",
+    "sender_email": "donotreply@your-domain.azurecomm.net",
+    "default_recipients": [
+      "admin@company.com",
+      "team@company.com"
+    ],
+    "subject_prefix": "[Azure Model Capacity]"
+  }
+}
+```
+
+**Email Setup Steps:**
+1. Create Azure Communication Service resource
+2. Configure and verify email domain
+3. Get connection string from Azure portal
+4. Update config.json with email settings
+5. See `EMAIL_SETUP.md` for detailed instructions
+
 ## 📊 Usage
 
 ### Dashboard Navigation
@@ -102,6 +133,14 @@ Edit `config.json` with your Azure details:
 2. **Apply Filters**: Use dropdowns to filter regions and models
 3. **Analyze Capacity**: View color-coded capacity matrix
 4. **Export Data**: Download CSV, JSON, or comprehensive Excel file
+5. **Send Email Report**: Use the email section to send formatted reports
+
+### Email Reporting
+1. **Navigate to Email Section**: Scroll to bottom of dashboard
+2. **Add Recipients**: Enter email addresses (one per line) or use defaults
+3. **Preview Content**: Expand "Preview Email Content" to see what will be sent
+4. **Send Report**: Click "Send Email Report" button
+5. **Professional Format**: Recipients receive HTML-formatted tables with color coding
 
 ### Capacity Types (SKUs)
 - **GlobalStandard**: Pay-per-token global capacity

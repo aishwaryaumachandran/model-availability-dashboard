@@ -10,6 +10,9 @@ requests>=2.31.0
 # Azure Core for exception handling
 azure-core>=1.29.0
 
+# Azure Communication Service for email functionality
+azure-communication-email>=1.0.0
+
 # Streamlit web application framework
 streamlit>=1.28.0
 
