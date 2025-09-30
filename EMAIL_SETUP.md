@@ -59,10 +59,10 @@ Update your `config.json` file with email settings:
 ### What's Included in the Email
 - **Summary Statistics**: Total SKUs, regions, and models
 - **Color-coded Tables**: Capacity data for each SKU type
-  - 🟢 Green: High capacity (≥1,000 units)
-  - 🟡 Yellow: Medium capacity (100-999 units)
-  - 🔴 Red: Low capacity (1-99 units)
-  - ⚫ Gray: No capacity (0 units)
+  - Green: High capacity (≥1,000 units)
+  - Yellow: Medium capacity (100-999 units)
+  - Red: Low capacity (1-99 units)
+  - Gray: No capacity (0 units)
 - **Professional HTML Formatting**: Clean, readable layout
 - **Timestamp**: When the report was generated
 

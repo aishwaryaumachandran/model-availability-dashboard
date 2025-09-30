@@ -523,7 +523,7 @@ def main():
                                 try:
                                     excel_data = create_comprehensive_excel(raw_data, all_skus)
                                     st.download_button(
-                                        label="📊 Download All SKUs Excel",
+                                        label="Download All SKUs Excel",
                                         data=excel_data,
                                         file_name=f"azure_capacity_all_skus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -537,7 +537,7 @@ def main():
                         with col2:
                             # Email button (only show on first tab to avoid duplicates)
                             if i == 0:  # Only show on the first tab
-                                if st.button("📧 Email report to the default recipients", type="secondary", help="Send capacity report to default recipients", key="email_button_main"):
+                                if st.button("Email report to the default recipients", type="secondary", help="Send capacity report to default recipients", key="email_button_main"):
                                     with st.spinner("Sending email report..."):
                                         success, message = send_email_report(raw_data, all_skus, recipients=None)
                                     

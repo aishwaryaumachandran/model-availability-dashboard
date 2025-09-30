@@ -2,7 +2,7 @@
 
 A professional web application for monitoring Azure AI Services model capacity across regions and SKU types. Built with Streamlit and following Azure best practices for enterprise deployments.
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 model-availability-dashboard/
@@ -20,37 +20,37 @@ model-availability-dashboard/
 └── README.md           # This file
 ```
 
-## ✨ Features
+## Features
 
-### 🎯 **Professional Dashboard Interface**
+### Professional Dashboard Interface
 - **Tabbed SKU Interface**: Separate tabs for each capacity type (GlobalStandard, ProvisionedManaged, etc.)
 - **Region-Centric View**: Rows for regions, columns for model versions
 - **Professional Styling**: Clean blue/green color scheme without emojis
 - **Dynamic Filtering**: Dropdown filters for regions and models per SKU type
 
-### 📊 **Capacity Visualization**
+### Capacity Visualization
 - **Color-Coded Cells**: Green (high), yellow (medium), red (low), gray (none)
 - **Real-Time Data**: 5-minute caching with manual refresh capability
 - **Comprehensive Coverage**: All Azure regions and model versions
 
-### 📥 **Export Capabilities**
+### Export Capabilities
 - **Individual SKU CSV**: Download specific capacity type data
 - **Individual SKU JSON**: Raw API data per capacity type
 - **Comprehensive Excel**: All SKUs in separate sheets with summary
 
-### � **Email Reporting**
+### Email Reporting
 - **Professional Email Reports**: Send capacity reports via Azure Communication Service
 - **HTML Formatted Tables**: Color-coded capacity data with professional styling
 - **Flexible Recipients**: Configure default recipients or specify custom ones
 - **Summary Statistics**: Include overview of total SKUs, regions, and models
 - **Automated Scheduling**: Ready for integration with task schedulers
 
-### �🔒 **Security & Best Practices**
+### Security & Best Practices
 - **Secure Configuration**: Template-based config with gitignore protection
 - **Azure Authentication**: DefaultAzureCredential with Azure CLI integration
 - **Enterprise-Ready**: Professional styling suitable for business presentations
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8+ with pip
@@ -86,7 +86,7 @@ model-availability-dashboard/
 ### Windows Users
 Double-click `start_dashboard.bat` for one-click launch.
 
-## 🔧 Configuration
+## Configuration
 
 Edit `config.json` with your Azure details:
 
@@ -126,7 +126,7 @@ For email reporting functionality, add email settings to `config.json`:
 4. Update config.json with email settings
 5. See `EMAIL_SETUP.md` for detailed instructions
 
-## 📊 Usage
+## Usage
 
 ### Dashboard Navigation
 1. **Select SKU Tab**: Choose capacity type (GlobalStandard, ProvisionedManaged, etc.)
@@ -151,12 +151,12 @@ For email reporting functionality, add email settings to `config.json`:
 - **DataZone**: Data residency compliant capacity
 
 ### Color Coding
-- 🟢 **Green**: High capacity (≥1,000 units)
-- 🟡 **Yellow**: Medium capacity (100-999 units)
-- 🔴 **Red**: Low capacity (1-99 units)
-- ⚪ **Gray**: No capacity available
+- **Green**: High capacity (≥1,000 units)
+- **Yellow**: Medium capacity (100-999 units)
+- **Red**: Low capacity (1-99 units)
+- **Gray**: No capacity available
 
-## 🛠️ Development
+## Development
 
 ### Project Architecture
 - **Portal Layer** (`portal/`): Streamlit web interface
@@ -176,7 +176,7 @@ For email reporting functionality, add email settings to `config.json`:
 - All sensitive data is automatically gitignored
 - Follow principle of least privilege for Azure permissions
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -204,5 +204,3 @@ This dashboard is designed for enterprise environments:
 - Real-time capacity monitoring for planning and deployment decisions
 
 ---
-
-**Built with ❤️ for Azure AI Services capacity monitoring**
