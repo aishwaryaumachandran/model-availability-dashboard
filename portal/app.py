@@ -408,7 +408,7 @@ def main():
                 filter_col1, filter_col2, filter_col3, filter_col4 = st.columns([3, 3, 2, 1])
                 
                 with filter_col1:
-                    region_filter_options = ["All Regions"] + ["US Regions", "Europe Regions", "Asia Regions"] + all_regions
+                    region_filter_options = ["All Regions"] + all_regions
                     selected_region_filter = st.selectbox(
                         "Filter Regions:",
                         options=region_filter_options,
@@ -450,14 +450,6 @@ def main():
                 
                 if selected_region_filter == "All Regions":
                     selected_regions = all_regions
-                elif selected_region_filter in ["US Regions", "Europe Regions", "Asia Regions"]:
-                    region_prefixes = {
-                        "US Regions": ["east", "west", "central", "south", "north"],
-                        "Europe Regions": ["europe", "uk", "france", "germany", "norway", "sweden", "switzerland"],
-                        "Asia Regions": ["asia", "japan", "korea", "india", "australia"]
-                    }
-                    prefixes = region_prefixes[selected_region_filter]
-                    selected_regions = [region for region in all_regions if any(prefix in region.lower() for prefix in prefixes)]
                 else:
                     selected_regions = [selected_region_filter] if selected_region_filter in all_regions else []
                 
