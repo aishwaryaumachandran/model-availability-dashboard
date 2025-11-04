@@ -4,81 +4,99 @@
     "1. Copy this file to 'config.json'",
     "2. Replace placeholder values with your actual Azure subscription details",
     "3. Update model versions as needed (check Azure documentation for latest versions)",
-    "4. Ensure you have appropriate permissions to query Azure AI Services capacity"
+    "4. Ensure you have appropriate permissions to query Azure AI Services capacity",
+    "5. IMPORTANT: Each model must have model_format, model_name, and model_version fields"
   ],
   
-  "subscription_id": "YOUR_SUBSCRIPTION_ID_HERE",
-  "subscription_name": "YOUR_SUBSCRIPTION_NAME_HERE",
+  "azure": {
+    "subscription_id": "YOUR_SUBSCRIPTION_ID_HERE",
+    "subscription_name": "YOUR_SUBSCRIPTION_NAME_HERE",
+    "api_version": "2024-04-01-preview",
+    "base_url": "https://management.azure.com"
+  },
   
   "models": {
     "gpt-4o": {
-      "version": "2024-05-13",
-      "description": "GPT-4 Omni model - latest flagship model"
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o",
+      "model_version": "2024-05-13"
     },
     "gpt-4": {
-      "version": "2024-02-15-preview",
-      "description": "GPT-4 standard model"
+      "model_format": "OpenAI",
+      "model_name": "gpt-4",
+      "model_version": "2024-02-15-preview"
     },
     "gpt-4-32k": {
-      "version": "2024-02-15-preview", 
-      "description": "GPT-4 with 32K context window"
+      "model_format": "OpenAI",
+      "model_name": "gpt-4-32k",
+      "model_version": "2024-02-15-preview"
     },
     "gpt-35-turbo": {
-      "version": "2024-02-15-preview",
-      "description": "GPT-3.5 Turbo model"
+      "model_format": "OpenAI",
+      "model_name": "gpt-35-turbo",
+      "model_version": "2024-02-15-preview"
     },
     "gpt-35-turbo-16k": {
-      "version": "2024-02-15-preview",
-      "description": "GPT-3.5 Turbo with 16K context window"
+      "model_format": "OpenAI",
+      "model_name": "gpt-35-turbo-16k",
+      "model_version": "2024-02-15-preview"
     },
     "o1-preview": {
-      "version": "2024-09-12",
-      "description": "O1 Preview reasoning model"
+      "model_format": "OpenAI",
+      "model_name": "o1-preview",
+      "model_version": "2024-09-12"
     },
     "o1-mini": {
-      "version": "2024-09-12", 
-      "description": "O1 Mini reasoning model"
+      "model_format": "OpenAI",
+      "model_name": "o1-mini",
+      "model_version": "2024-09-12"
     },
     "o3-mini": {
-      "version": "2025-01-31",
-      "description": "O3 Mini reasoning model"
+      "model_format": "OpenAI",
+      "model_name": "o3-mini",
+      "model_version": "2025-01-31"
     },
     "o4-mini": {
-      "version": "2025-04-16",
-      "description": "O4 Mini reasoning model"
+      "model_format": "OpenAI",
+      "model_name": "o4-mini",
+      "model_version": "2025-04-16"
     },
     "text-embedding-ada-002": {
-      "version": "2",
-      "description": "Text embedding model"
+      "model_format": "OpenAI",
+      "model_name": "text-embedding-ada-002",
+      "model_version": "2"
     },
     "text-embedding-3-small": {
-      "version": "1",
-      "description": "Small text embedding model"
+      "model_format": "OpenAI",
+      "model_name": "text-embedding-3-small",
+      "model_version": "1"
     },
     "text-embedding-3-large": {
-      "version": "1", 
-      "description": "Large text embedding model"
+      "model_format": "OpenAI",
+      "model_name": "text-embedding-3-large",
+      "model_version": "1"
     },
     "dall-e-3": {
-      "version": "3.0",
-      "description": "DALL-E 3 image generation model"
+      "model_format": "OpenAI",
+      "model_name": "dall-e-3",
+      "model_version": "3.0"
     },
     "whisper": {
-      "version": "2023-09-01-preview",
-      "description": "Whisper speech-to-text model"
+      "model_format": "OpenAI",
+      "model_name": "whisper",
+      "model_version": "2023-09-01-preview"
     },
     "tts": {
-      "version": "2024-02-15-preview",
-      "description": "Text-to-speech model"
+      "model_format": "OpenAI",
+      "model_name": "tts",
+      "model_version": "2024-02-15-preview"
     }
   },
 
-  "api_settings": {
-    "timeout_seconds": 30,
-    "max_retries": 3,
-    "retry_delay_seconds": 1,
-    "base_url": "https://management.azure.com",
-    "api_version": "2024-04-01-preview"
+  "request_settings": {
+    "timeout": 30,
+    "retry_attempts": 3,
+    "retry_delay": 1
   },
 
   "dashboard_settings": {
