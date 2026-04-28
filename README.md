@@ -12,12 +12,20 @@ model-availability-dashboard/
 │   ├── __init__.py        # Package initialization
 │   ├── azure_model_capacity_client.py  # Azure API client
 │   └── usage_examples.py  # Example usage scripts
-├── config.template.json   # Configuration template (secure)
-├── requirements.txt       # Python dependencies
+├── infra/                 # Azure Infrastructure (Bicep)
+│   ├── main.bicep         # Main orchestrator
+│   ├── main.parameters.json
+│   ├── abbreviations.json
+│   └── modules/
+│       ├── acr.bicep               # Container Registry
+│       ├── container-apps-env.bicep # Container Apps Environment
+│       └── container-app.bicep      # Container App + RBAC
+├── azure.yaml            # Azure Developer CLI project file
+├── Dockerfile            # Container image definition
+├── config.template.json  # Configuration template (secure)
+├── requirements.txt      # Python dependencies
 ├── run_dashboard.py      # Dashboard launcher
-├── start_dashboard.bat   # Windows launcher
-├── .gitignore           # Security-focused ignore rules
-└── README.md           # This file
+└── README.md             # This file
 ```
 
 ## Features
@@ -55,7 +63,26 @@ model-availability-dashboard/
 ### Prerequisites
 - Python 3.8+ with pip
 - Azure CLI installed and authenticated (`az login`)
+- **Cognitive Services User** role on the target Azure subscription
 - Access to Azure AI Services capacity API
+
+### Azure Permissions
+
+The app uses `DefaultAzureCredential` and needs the **Cognitive Services User** role to query model capacity data:
+
+```bash
+# For local development (your user account)
+az role assignment create \
+  --assignee <your-user-object-id-or-email> \
+  --role "Cognitive Services User" \
+  --scope /subscriptions/<subscription-id>
+
+# For deployed Container App (managed identity - done automatically by azd up)
+az role assignment create \
+  --assignee <managed-identity-principal-id> \
+  --role "Cognitive Services User" \
+  --scope /subscriptions/<subscription-id>
+```
 
 ### Installation
 
@@ -82,9 +109,6 @@ model-availability-dashboard/
    ```
 
 5. **Access Dashboard**: Open http://localhost:8501 in your browser
-
-### Windows Users
-Double-click `start_dashboard.bat` for one-click launch.
 
 ## Configuration
 
