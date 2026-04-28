@@ -16,30 +16,177 @@
   },
   
   "models": {
-    "gpt-4o": {
+    "_comment_gpt55": "=== GPT-5.5 Series ===",
+    "gpt-5.5": {
       "model_format": "OpenAI",
-      "model_name": "gpt-4o",
-      "model_version": "2024-05-13"
+      "model_name": "gpt-5.5",
+      "model_version": "2026-04-24"
     },
-    "gpt-4": {
+
+    "_comment_gpt54": "=== GPT-5.4 Series ===",
+    "gpt-5.4": {
       "model_format": "OpenAI",
-      "model_name": "gpt-4",
-      "model_version": "2024-02-15-preview"
+      "model_name": "gpt-5.4",
+      "model_version": "2026-03-05"
     },
-    "gpt-4-32k": {
+    "gpt-5.4-pro": {
       "model_format": "OpenAI",
-      "model_name": "gpt-4-32k",
-      "model_version": "2024-02-15-preview"
+      "model_name": "gpt-5.4-pro",
+      "model_version": "2026-03-05"
     },
-    "gpt-35-turbo": {
+    "gpt-5.4-mini": {
       "model_format": "OpenAI",
-      "model_name": "gpt-35-turbo",
-      "model_version": "2024-02-15-preview"
+      "model_name": "gpt-5.4-mini",
+      "model_version": "2026-03-17"
     },
-    "gpt-35-turbo-16k": {
+    "gpt-5.4-nano": {
       "model_format": "OpenAI",
-      "model_name": "gpt-35-turbo-16k",
-      "model_version": "2024-02-15-preview"
+      "model_name": "gpt-5.4-nano",
+      "model_version": "2026-03-17"
+    },
+
+    "_comment_gpt53": "=== GPT-5.3 Series ===",
+    "gpt-5.3-codex": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.3-codex",
+      "model_version": "2026-02-24"
+    },
+    "gpt-5.3-chat": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.3-chat",
+      "model_version": "2026-03-03"
+    },
+
+    "_comment_gpt52": "=== GPT-5.2 Series ===",
+    "gpt-5.2": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.2",
+      "model_version": "2025-12-11"
+    },
+    "gpt-5.2-codex": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.2-codex",
+      "model_version": "2026-01-14"
+    },
+    "gpt-5.2-chat": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.2-chat",
+      "model_version": "2026-02-10"
+    },
+
+    "_comment_gpt51": "=== GPT-5.1 Series ===",
+    "gpt-5.1": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.1",
+      "model_version": "2025-11-13"
+    },
+    "gpt-5.1-chat": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.1-chat",
+      "model_version": "2025-11-13"
+    },
+    "gpt-5.1-codex": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.1-codex",
+      "model_version": "2025-11-13"
+    },
+    "gpt-5.1-codex-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.1-codex-mini",
+      "model_version": "2025-11-13"
+    },
+    "gpt-5.1-codex-max": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.1-codex-max",
+      "model_version": "2025-12-04"
+    },
+
+    "_comment_gpt5": "=== GPT-5 Series ===",
+    "gpt-5": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5",
+      "model_version": "2025-08-07"
+    },
+    "gpt-5-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5-mini",
+      "model_version": "2025-08-07"
+    },
+    "gpt-5-nano": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5-nano",
+      "model_version": "2025-08-07"
+    },
+    "gpt-5-chat": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5-chat",
+      "model_version": "2025-10-03"
+    },
+    "gpt-5-codex": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5-codex",
+      "model_version": "2025-09-11"
+    },
+    "gpt-5-pro": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5-pro",
+      "model_version": "2025-10-06"
+    },
+
+    "_comment_gptoss": "=== GPT-OSS ===",
+    "gpt-oss-120b": {
+      "model_format": "OpenAI-OSS",
+      "model_name": "gpt-oss-120b",
+      "model_version": "1"
+    },
+
+    "_comment_gpt41": "=== GPT-4.1 Series ===",
+    "gpt-4.1": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4.1",
+      "model_version": "2025-04-14"
+    },
+    "gpt-4.1-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4.1-mini",
+      "model_version": "2025-04-14"
+    },
+    "gpt-4.1-nano": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4.1-nano",
+      "model_version": "2025-04-14"
+    },
+
+    "_comment_oseries": "=== O-Series Reasoning Models ===",
+    "codex-mini": {
+      "model_format": "OpenAI",
+      "model_name": "codex-mini",
+      "model_version": "2025-05-16"
+    },
+    "o3-pro": {
+      "model_format": "OpenAI",
+      "model_name": "o3-pro",
+      "model_version": "2025-06-10"
+    },
+    "o4-mini": {
+      "model_format": "OpenAI",
+      "model_name": "o4-mini",
+      "model_version": "2025-04-16"
+    },
+    "o3": {
+      "model_format": "OpenAI",
+      "model_name": "o3",
+      "model_version": "2025-04-16"
+    },
+    "o3-mini": {
+      "model_format": "OpenAI",
+      "model_name": "o3-mini",
+      "model_version": "2025-01-31"
+    },
+    "o1": {
+      "model_format": "OpenAI",
+      "model_name": "o1",
+      "model_version": "2024-12-17"
     },
     "o1-preview": {
       "model_format": "OpenAI",
@@ -51,45 +198,93 @@
       "model_name": "o1-mini",
       "model_version": "2024-09-12"
     },
-    "o3-mini": {
+
+    "_comment_other": "=== Other ===",
+    "computer-use-preview": {
       "model_format": "OpenAI",
-      "model_name": "o3-mini",
-      "model_version": "2025-01-31"
+      "model_name": "computer-use-preview",
+      "model_version": "2025-03-11"
     },
-    "o4-mini": {
+
+    "_comment_embeddings": "=== Embeddings ===",
+    "text-embedding-3-large": {
       "model_format": "OpenAI",
-      "model_name": "o4-mini",
-      "model_version": "2025-04-16"
-    },
-    "text-embedding-ada-002": {
-      "model_format": "OpenAI",
-      "model_name": "text-embedding-ada-002",
-      "model_version": "2"
+      "model_name": "text-embedding-3-large",
+      "model_version": "1"
     },
     "text-embedding-3-small": {
       "model_format": "OpenAI",
       "model_name": "text-embedding-3-small",
       "model_version": "1"
     },
-    "text-embedding-3-large": {
+    "text-embedding-ada-002": {
       "model_format": "OpenAI",
-      "model_name": "text-embedding-3-large",
+      "model_name": "text-embedding-ada-002",
+      "model_version": "2"
+    },
+
+    "_comment_image": "=== Image Generation ===",
+    "gpt-image-1": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-image-1",
       "model_version": "1"
     },
-    "dall-e-3": {
+    "gpt-image-1-mini": {
       "model_format": "OpenAI",
-      "model_name": "dall-e-3",
-      "model_version": "3.0"
+      "model_name": "gpt-image-1-mini",
+      "model_version": "1"
+    },
+    "gpt-image-1.5": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-image-1.5",
+      "model_version": "1"
+    },
+
+    "_comment_audio": "=== Audio Models ===",
+    "gpt-audio": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-audio",
+      "model_version": "2025-08-28"
+    },
+    "gpt-audio-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-audio-mini",
+      "model_version": "2025-10-06"
+    },
+    "gpt-realtime": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime",
+      "model_version": "2025-08-28"
+    },
+    "gpt-realtime-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-mini",
+      "model_version": "2025-12-15"
+    },
+    "gpt-audio-1.5": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-audio-1.5",
+      "model_version": "2026-02-23"
+    },
+    "gpt-realtime-1.5": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-1.5",
+      "model_version": "2026-02-23"
     },
     "whisper": {
       "model_format": "OpenAI",
       "model_name": "whisper",
-      "model_version": "2023-09-01-preview"
+      "model_version": "1"
     },
     "tts": {
       "model_format": "OpenAI",
       "model_name": "tts",
-      "model_version": "2024-02-15-preview"
+      "model_version": "1"
+    },
+    "tts-hd": {
+      "model_format": "OpenAI",
+      "model_name": "tts-hd",
+      "model_version": "1"
     }
   },
 

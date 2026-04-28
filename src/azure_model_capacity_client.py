@@ -360,6 +360,8 @@ class AzureModelCapacityClient:
         errors = []
         
         for model_name in self.config['models'].keys():
+            if model_name.startswith('_'):
+                continue
             try:
                 results = self.get_model_capacity(model_name)
                 all_results[model_name] = results

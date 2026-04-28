@@ -128,6 +128,17 @@ def load_capacity_data():
         return {}
 
 
+def _model_version_sort_key(model_version_key):
+    """Extract version date from 'model (version)' and return a sort key for newest-first ordering."""
+    import re
+    match = re.search(r'\(([^)]+)\)$', model_version_key)
+    if match and match.group(1) != 'N/A':
+        version = match.group(1)
+        # Date-based versions like 2026-04-24 sort lexicographically
+        return (0, version)  # group 0 = has version, sorted by date desc via reverse=True
+    return (-1, model_version_key)  # group -1 = N/A versions; with reverse=True, -1 < 0 so these go last
+
+
 def process_capacity_data(raw_data, selected_sku=None):
     """Process raw capacity data into a structured format for display with regions as rows, filtered by SKU."""
     # First, collect all regions and model+version combinations for the selected SKU
@@ -190,7 +201,7 @@ def process_capacity_data(raw_data, selected_sku=None):
         
         processed_data.append(row_data)
     
-    return processed_data, sorted(model_versions), sorted(all_skus)
+    return processed_data, sorted(model_versions, key=_model_version_sort_key, reverse=True), sorted(all_skus)
 
 
 def create_capacity_table(processed_data, selected_model_versions):
@@ -205,7 +216,7 @@ def create_capacity_table(processed_data, selected_model_versions):
     base_columns = ['Region']
     model_columns = [col for col in df.columns if col in selected_model_versions]
     
-    column_order = base_columns + sorted(model_columns)
+    column_order = base_columns + sorted(model_columns, key=_model_version_sort_key, reverse=True)
     
     # Reorder columns and fill missing values
     df = df.reindex(columns=column_order, fill_value=0)
@@ -507,41 +518,7 @@ def main():
                         
                         # Export functionality
                         st.markdown("---")
-                        col1, col2, col3 = st.columns([2, 2, 2])
-                        
-                        with col1:
-                            # Comprehensive Excel download (only show on first tab to avoid duplicates)
-                            if i == 0:  # Only show on the first tab
-                                try:
-                                    excel_data = create_comprehensive_excel(raw_data, all_skus)
-                                    st.download_button(
-                                        label="Download All SKUs Excel",
-                                        data=excel_data,
-                                        file_name=f"azure_capacity_all_skus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-                                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                        key="excel_download_all"
-                                    )
-                                except Exception as e:
-                                    st.error(f"Excel generation failed: {str(e)}")
-                            else:
-                                st.write("")  # Empty space for alignment
-                        
-                        with col2:
-                            # Email button (only show on first tab to avoid duplicates)
-                            if i == 0:  # Only show on the first tab
-                                if st.button("Email report to the default recipients", type="secondary", help="Send capacity report to default recipients", key="email_button_main"):
-                                    with st.spinner("Sending email report..."):
-                                        success, message = send_email_report(raw_data, all_skus, recipients=None)
-                                    
-                                    if success:
-                                        st.success(message)
-                                    else:
-                                        st.error(message)
-                            else:
-                                st.write("")  # Empty space for alignment
-                        
-                        with col3:
-                            st.caption(f"**{sku}**: {len(filtered_data)} regions • Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+                        st.caption(f"**{sku}**: {len(filtered_data)} regions • Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                             
                     else:
                         st.warning(f"No data to display for {sku} with current filters.")
