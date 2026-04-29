@@ -298,7 +298,9 @@
     "default_sku_filter": "GlobalStandard",
     "cache_timeout_minutes": 5,
     "max_regions_display": 50,
-    "enable_debug_logging": false
+    "enable_debug_logging": false,
+    "_regions_note": "Use 0 to include all regions, or provide an array like [\"eastus\", \"swedencentral\"]",
+    "regions": 0
   },
 
   "authentication": {

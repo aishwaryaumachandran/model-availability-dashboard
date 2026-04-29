@@ -88,10 +88,84 @@ class AzureModelCapacityClient:
             AzureError: If authentication fails
         """
         self.config = self._load_config(config_path)
+        self.regions_filter = self._parse_regions_filter()
         self.credential = None
         self.session = requests.Session()
         self._setup_authentication()
         self._setup_session()
+
+    def _parse_regions_filter(self) -> Optional[set]:
+        """
+        Parse optional regions filter from configuration.
+
+        Supported values:
+        - 0: include all regions
+        - ["eastus", "swedencentral"]: include only listed regions
+
+        Returns:
+            None when all regions should be included, otherwise a lowercase set of allowed regions
+
+        Raises:
+            ConfigurationError: If regions setting is invalid
+        """
+        region_setting = self.config.get('dashboard_settings', {}).get('regions')
+
+        # Backward-compatible fallback for top-level regions setting.
+        if region_setting is None:
+            region_setting = self.config.get('regions', 0)
+
+        if region_setting == 0:
+            return None
+
+        if not isinstance(region_setting, list):
+            raise ConfigurationError(
+                "Invalid regions setting. Use 0 for all regions or an array of region names."
+            )
+
+        normalized_regions = {
+            str(region).strip().lower()
+            for region in region_setting
+            if str(region).strip()
+        }
+
+        logger.info("Region filter enabled for %d regions", len(normalized_regions))
+        return normalized_regions
+
+    def _apply_region_filter(self, results: List[ModelCapacityResult]) -> List[ModelCapacityResult]:
+        """Apply configured region filter to capacity results."""
+        if self.regions_filter is None:
+            return results
+
+        filtered_results = [
+            result for result in results
+            if result.location and result.location.lower() in self.regions_filter
+        ]
+        return filtered_results
+
+    def is_region_filter_active(self) -> bool:
+        """
+        Check if a region filter is currently active.
+        
+        Returns:
+            True if regions are filtered (subset mode), False if all regions are included (full mode)
+        """
+        return self.regions_filter is not None
+
+    def get_region_filter_metadata(self) -> Dict[str, Any]:
+        """
+        Get metadata about the region filter configuration.
+        
+        Returns:
+            Dictionary with keys:
+            - 'is_filtered': bool - True if region filter is active
+            - 'mode': str - 'subset' if filtered, 'full' if all regions
+            - 'filtered_regions': set or None - The set of filtered regions, or None if all regions
+        """
+        return {
+            'is_filtered': self.is_region_filter_active(),
+            'mode': 'subset' if self.is_region_filter_active() else 'full',
+            'filtered_regions': self.regions_filter
+        }
         
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """
@@ -337,6 +411,8 @@ class AzureModelCapacityClient:
                     model_version=model_info.get('version', '')
                 )
                 results.append(result)
+
+            results = self._apply_region_filter(results)
                 
             logger.info(f"Retrieved capacity data for {len(results)} locations for model '{model_name}'")
             return results

@@ -117,7 +117,8 @@ st.markdown("""
 
 @st.cache_data(ttl=300)  # Cache for 5 minutes
 def load_capacity_data():
-    """Load capacity data from Azure API with caching."""
+    #"""Load capacity data from Azure API with caching"""
+    """Load capacity data from Azure API with caching (background load without progress display)."""
     try:
         # Look for config.json in the parent directory
         config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
@@ -126,6 +127,136 @@ def load_capacity_data():
     except Exception as e:
         st.error(f"Error loading capacity data: {str(e)}")
         return {}
+
+
+def load_capacity_data_with_progress():
+    """Load capacity data with progress display showing which model is being loaded."""
+    try:
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        
+        # Initialize session state for persistent display
+        if 'capacity_data_loaded' not in st.session_state:
+            st.session_state.capacity_data_loaded = False
+            st.session_state.loading_results = []
+            st.session_state.all_results_cache = {}
+        
+        # If data is already loaded, show completed status with expanded=True
+        if st.session_state.capacity_data_loaded:
+            # Data already loaded in this session; don't render loading UI again.
+            return st.session_state.all_results_cache
+        
+        # Load config to get model list
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        
+        models = config.get('models', {})
+        model_names = [m for m in models.keys() if not m.startswith('_')]
+        
+        all_results = {}
+        errors = []
+        load_results = []  # Track results in order (newest at top)
+        
+        status_container = st.empty()
+        with status_container.container():
+            with st.status("Loading model capacity data...", expanded=True) as status:
+            # Create a placeholder for dynamic updates
+                results_placeholder = st.empty()
+            
+                for idx, model_name in enumerate(model_names):
+                # Update status with current model
+                    progress = (idx + 1) / len(model_names)
+                    status.update(
+                        label=f"Loading model capacity data ({idx + 1}/{len(model_names)})",
+                        state="running",
+                        expanded=True
+                    )
+                
+                    try:
+                        with AzureModelCapacityClient(config_path) as client:
+                            results = client.get_model_capacity(model_name)
+                            all_results[model_name] = results
+                            # Add newest result at the beginning of the list
+                            load_results.insert(0, f"✓ {model_name}: {len(results)} regions")
+                    except Exception as e:
+                        error_msg = f"Failed to load {model_name}: {e}"
+                        all_results[model_name] = []
+                        errors.append(error_msg)
+                        # Add newest error at the beginning of the list
+                        load_results.insert(0, f"✗ {model_name}: Error")
+                
+                # Update the placeholder with all results (newest first)
+                    with results_placeholder.container():
+                        for result in load_results:
+                            st.write(result)
+            
+                # Cache results in session state for subsequent reruns
+                st.session_state.loading_results = load_results
+                st.session_state.all_results_cache = all_results
+                st.session_state.capacity_data_loaded = True
+            
+                # Final status: keep visible only when there are errors.
+                if errors:
+                    status.update(label=f"Loaded with {len(errors)} errors", state="error", expanded=True)
+
+        # Hide loading component after successful completion.
+        if not errors:
+            status_container.empty()
+        
+        return all_results
+        
+    except Exception as e:
+        st.error(f"Error loading capacity data: {str(e)}")
+        return {}
+
+
+@st.cache_data(ttl=300)  # Cache for 5 minutes
+def load_region_filter_metadata():
+    """Load region filter metadata directly from configuration file."""
+    try:
+        # Look for config.json in the parent directory
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        
+        # Check for region settings in dashboard_settings or top-level regions
+        region_setting = config.get('dashboard_settings', {}).get('regions')
+        
+        # Backward-compatible fallback
+        if region_setting is None:
+            region_setting = config.get('regions', 0)
+        
+        # Determine if filtering is active
+        if region_setting == 0:
+            is_filtered = False
+            filtered_regions = None
+            filtered_regions_list = []
+        elif isinstance(region_setting, list):
+            is_filtered = True
+            filtered_regions = {str(r).strip().lower() for r in region_setting if str(r).strip()}
+            # Keep original casing for display
+            filtered_regions_list = [str(r).strip() for r in region_setting if str(r).strip()]
+        else:
+            # Invalid config, default to full
+            is_filtered = False
+            filtered_regions = None
+            filtered_regions_list = []
+        
+        return {
+            'is_filtered': is_filtered,
+            'mode': 'subset' if is_filtered else 'full',
+            'filtered_regions': filtered_regions,
+            'filtered_regions_list': filtered_regions_list  # Original casing for display
+        }
+        
+    except Exception:
+        # Return default (full mode) if error
+        return {
+            'is_filtered': False,
+            'mode': 'full',
+            'filtered_regions': None,
+            'filtered_regions_list': []
+        }
 
 
 def _model_version_sort_key(model_version_key):
@@ -139,7 +270,7 @@ def _model_version_sort_key(model_version_key):
     return (-1, model_version_key)  # group -1 = N/A versions; with reverse=True, -1 < 0 so these go last
 
 
-def process_capacity_data(raw_data, selected_sku=None):
+def process_capacity_data(raw_data, selected_sku=None, region_filter_metadata=None):
     """Process raw capacity data into a structured format for display with regions as rows, filtered by SKU."""
     # First, collect all regions and model+version combinations for the selected SKU
     all_regions = set()
@@ -192,7 +323,9 @@ def process_capacity_data(raw_data, selected_sku=None):
     
     # Create processed data with regions as rows
     processed_data = []
+    
     for region in sorted(all_regions):
+        # Use region name directly (mode is already shown in the banner at the top)
         row_data = {'Region': region}
         
         for model_version in sorted(model_versions):
@@ -224,7 +357,7 @@ def create_capacity_table(processed_data, selected_model_versions):
     return df
 
 
-def create_comprehensive_excel(raw_data, all_skus):
+def create_comprehensive_excel(raw_data, all_skus, region_filter_metadata=None):
     """Create a comprehensive Excel file with separate sheets for each SKU."""
     output = BytesIO()
     
@@ -232,7 +365,7 @@ def create_comprehensive_excel(raw_data, all_skus):
         # Create a summary sheet
         summary_data = []
         for sku in sorted(all_skus):
-            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku)
+            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku, region_filter_metadata=region_filter_metadata)
             total_regions = len(processed_data)
             total_models = len(model_versions)
             
@@ -254,7 +387,7 @@ def create_comprehensive_excel(raw_data, all_skus):
         
         # Create a sheet for each SKU
         for sku in sorted(all_skus):
-            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku)
+            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku, region_filter_metadata=region_filter_metadata)
             
             if processed_data:
                 df = create_capacity_table(processed_data, model_versions)
@@ -297,7 +430,7 @@ def apply_table_styling(df):
     return styled_df
 
 
-def send_email_report(raw_data, all_skus, recipients=None):
+def send_email_report(raw_data, all_skus, recipients=None, region_filter_metadata=None):
     """
     Send email report with capacity data for all SKUs.
     
@@ -305,6 +438,7 @@ def send_email_report(raw_data, all_skus, recipients=None):
         raw_data: Raw capacity data
         all_skus: List of all available SKU types
         recipients: Optional list of recipient emails
+        region_filter_metadata: Region filter configuration metadata
     
     Returns:
         Tuple of (success: bool, message: str)
@@ -328,7 +462,7 @@ def send_email_report(raw_data, all_skus, recipients=None):
         }
         
         for sku in all_skus:
-            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku)
+            processed_data, model_versions, _ = process_capacity_data(raw_data, selected_sku=sku, region_filter_metadata=region_filter_metadata)
             
             if processed_data:
                 df = create_capacity_table(processed_data, model_versions)
@@ -372,16 +506,24 @@ def main():
     # Header
     st.markdown('<div class="main-header">Azure AI Model Capacity Dashboard</div>', unsafe_allow_html=True)
     
-    # Load data first
-    with st.spinner("Loading capacity data..."):
-        raw_data = load_capacity_data()
+    # Load data with progress display
+    raw_data = load_capacity_data_with_progress()
     
     if not raw_data:
         st.error("No capacity data available. Please check your configuration.")
         return
     
+    # Load region filter metadata
+    region_filter_metadata = load_region_filter_metadata()
+    
+    # Display region mode indicator
+    if region_filter_metadata.get('is_filtered'):
+        regions_list = region_filter_metadata.get('filtered_regions_list', [])
+        regions_display = ", ".join(regions_list)
+        st.info(f"📍 **Region Mode**: SUBSET\n\n**Selected Regions** ({len(regions_list)}): {regions_display}")
+    
     # Process data to get available SKUs
-    temp_processed_data, temp_model_versions, all_skus = process_capacity_data(raw_data)
+    temp_processed_data, temp_model_versions, all_skus = process_capacity_data(raw_data, region_filter_metadata=region_filter_metadata)
     
     # Create tabs for different SKU types
     if all_skus:
@@ -407,7 +549,7 @@ def main():
         for i, (sku, tab) in enumerate(zip(sorted_skus, tabs)):
             with tab:
                 # Process data for the selected SKU
-                processed_data, all_model_versions, _ = process_capacity_data(raw_data, selected_sku=sku)
+                processed_data, all_model_versions, _ = process_capacity_data(raw_data, selected_sku=sku, region_filter_metadata=region_filter_metadata)
     
                 # Get all unique regions for this SKU
                 all_regions = sorted(list(set(row['Region'] for row in processed_data)))
