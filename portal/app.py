@@ -16,6 +16,7 @@ import streamlit as st
 import pandas as pd
 import json
 import asyncio
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 import numpy as np
 from io import BytesIO
@@ -156,38 +157,46 @@ def load_capacity_data_with_progress():
         errors = []
         load_results = []  # Track results in order (newest at top)
         
+        def fetch_model_capacity(model_name):
+            """Fetch capacity for a single model (runs in thread pool)."""
+            try:
+                with AzureModelCapacityClient(config_path) as client:
+                    results = client.get_model_capacity(model_name)
+                    return model_name, results, None
+            except Exception as e:
+                return model_name, [], str(e)
+        
         status_container = st.empty()
         with status_container.container():
             with st.status("Loading model capacity data...", expanded=True) as status:
-            # Create a placeholder for dynamic updates
                 results_placeholder = st.empty()
-            
-                for idx, model_name in enumerate(model_names):
-                # Update status with current model
-                    progress = (idx + 1) / len(model_names)
-                    status.update(
-                        label=f"Loading model capacity data ({idx + 1}/{len(model_names)})",
-                        state="running",
-                        expanded=True
-                    )
+                completed = 0
                 
-                    try:
-                        with AzureModelCapacityClient(config_path) as client:
-                            results = client.get_model_capacity(model_name)
+                # Use ThreadPoolExecutor for parallel loading
+                with ThreadPoolExecutor(max_workers=10) as executor:
+                    futures = {executor.submit(fetch_model_capacity, name): name for name in model_names}
+                    
+                    for future in as_completed(futures):
+                        model_name, results, error = future.result()
+                        completed += 1
+                        
+                        status.update(
+                            label=f"Loading model capacity data ({completed}/{len(model_names)})",
+                            state="running",
+                            expanded=True
+                        )
+                        
+                        if error:
+                            all_results[model_name] = []
+                            errors.append(f"Failed to load {model_name}: {error}")
+                            load_results.insert(0, f"✗ {model_name}: Error")
+                        else:
                             all_results[model_name] = results
-                            # Add newest result at the beginning of the list
                             load_results.insert(0, f"✓ {model_name}: {len(results)} regions")
-                    except Exception as e:
-                        error_msg = f"Failed to load {model_name}: {e}"
-                        all_results[model_name] = []
-                        errors.append(error_msg)
-                        # Add newest error at the beginning of the list
-                        load_results.insert(0, f"✗ {model_name}: Error")
-                
-                # Update the placeholder with all results (newest first)
-                    with results_placeholder.container():
-                        for result in load_results:
-                            st.write(result)
+                        
+                        with results_placeholder.container():
+                            for result in load_results:
+                                st.write(result)
             
                 # Cache results in session state for subsequent reruns
                 st.session_state.loading_results = load_results
