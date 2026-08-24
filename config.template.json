@@ -7,14 +7,12 @@
     "4. Ensure you have appropriate permissions to query Azure AI Services capacity",
     "5. IMPORTANT: Each model must have model_format, model_name, and model_version fields"
   ],
-  
   "azure": {
     "subscription_id": "YOUR_SUBSCRIPTION_ID_HERE",
     "subscription_name": "YOUR_SUBSCRIPTION_NAME_HERE",
     "api_version": "2024-04-01-preview",
     "base_url": "https://management.azure.com"
   },
-  
   "models": {
     "_comment_gpt55": "=== GPT-5.5 Series ===",
     "gpt-5.5": {
@@ -22,7 +20,6 @@
       "model_name": "gpt-5.5",
       "model_version": "2026-04-24"
     },
-
     "_comment_gpt54": "=== GPT-5.4 Series ===",
     "gpt-5.4": {
       "model_format": "OpenAI",
@@ -44,7 +41,6 @@
       "model_name": "gpt-5.4-nano",
       "model_version": "2026-03-17"
     },
-
     "_comment_gpt53": "=== GPT-5.3 Series ===",
     "gpt-5.3-codex": {
       "model_format": "OpenAI",
@@ -56,7 +52,6 @@
       "model_name": "gpt-5.3-chat",
       "model_version": "2026-03-03"
     },
-
     "_comment_gpt52": "=== GPT-5.2 Series ===",
     "gpt-5.2": {
       "model_format": "OpenAI",
@@ -73,7 +68,6 @@
       "model_name": "gpt-5.2-chat",
       "model_version": "2026-02-10"
     },
-
     "_comment_gpt51": "=== GPT-5.1 Series ===",
     "gpt-5.1": {
       "model_format": "OpenAI",
@@ -100,7 +94,6 @@
       "model_name": "gpt-5.1-codex-max",
       "model_version": "2025-12-04"
     },
-
     "_comment_gpt5": "=== GPT-5 Series ===",
     "gpt-5": {
       "model_format": "OpenAI",
@@ -132,14 +125,12 @@
       "model_name": "gpt-5-pro",
       "model_version": "2025-10-06"
     },
-
     "_comment_gptoss": "=== GPT-OSS ===",
     "gpt-oss-120b": {
       "model_format": "OpenAI-OSS",
       "model_name": "gpt-oss-120b",
       "model_version": "1"
     },
-
     "_comment_gpt41": "=== GPT-4.1 Series ===",
     "gpt-4.1": {
       "model_format": "OpenAI",
@@ -156,17 +147,11 @@
       "model_name": "gpt-4.1-nano",
       "model_version": "2025-04-14"
     },
-
     "_comment_oseries": "=== O-Series Reasoning Models ===",
     "codex-mini": {
       "model_format": "OpenAI",
       "model_name": "codex-mini",
       "model_version": "2025-05-16"
-    },
-    "o3-pro": {
-      "model_format": "OpenAI",
-      "model_name": "o3-pro",
-      "model_version": "2025-06-10"
     },
     "o4-mini": {
       "model_format": "OpenAI",
@@ -188,24 +173,7 @@
       "model_name": "o1",
       "model_version": "2024-12-17"
     },
-    "o1-preview": {
-      "model_format": "OpenAI",
-      "model_name": "o1-preview",
-      "model_version": "2024-09-12"
-    },
-    "o1-mini": {
-      "model_format": "OpenAI",
-      "model_name": "o1-mini",
-      "model_version": "2024-09-12"
-    },
-
     "_comment_other": "=== Other ===",
-    "computer-use-preview": {
-      "model_format": "OpenAI",
-      "model_name": "computer-use-preview",
-      "model_version": "2025-03-11"
-    },
-
     "_comment_embeddings": "=== Embeddings ===",
     "text-embedding-3-large": {
       "model_format": "OpenAI",
@@ -222,7 +190,6 @@
       "model_name": "text-embedding-ada-002",
       "model_version": "2"
     },
-
     "_comment_image": "=== Image Generation ===",
     "gpt-image-1": {
       "model_format": "OpenAI",
@@ -239,7 +206,6 @@
       "model_name": "gpt-image-1.5",
       "model_version": "1"
     },
-
     "_comment_audio": "=== Audio Models ===",
     "gpt-audio": {
       "model_format": "OpenAI",
@@ -285,15 +251,474 @@
       "model_format": "OpenAI",
       "model_name": "tts-hd",
       "model_version": "1"
+    },
+    "_comment_anthropic": "=== Anthropic Claude (via Azure AI Foundry) ===",
+    "claude-opus-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-5",
+      "model_version": "2"
+    },
+    "claude-sonnet-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-sonnet-5",
+      "model_version": "2"
+    },
+    "claude-opus-4-8": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-4-8",
+      "model_version": "2"
+    },
+    "claude-opus-4-7": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-4-7",
+      "model_version": "1"
+    },
+    "claude-opus-4-6": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-4-6",
+      "model_version": "1"
+    },
+    "claude-opus-4-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-4-5",
+      "model_version": "20251101"
+    },
+    "claude-opus-4-1": {
+      "model_format": "Anthropic",
+      "model_name": "claude-opus-4-1",
+      "model_version": "20250805"
+    },
+    "claude-sonnet-4-6": {
+      "model_format": "Anthropic",
+      "model_name": "claude-sonnet-4-6",
+      "model_version": "1"
+    },
+    "claude-sonnet-4-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-sonnet-4-5",
+      "model_version": "20250929"
+    },
+    "claude-haiku-4-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-haiku-4-5",
+      "model_version": "20251001"
+    },
+    "claude-fable-5": {
+      "model_format": "Anthropic",
+      "model_name": "claude-fable-5",
+      "model_version": "1"
+    },
+    "_comment_xai": "=== xAI Grok ===",
+    "grok-4.3": {
+      "model_format": "xAI",
+      "model_name": "grok-4.3",
+      "model_version": "1"
+    },
+    "grok-4-20-reasoning": {
+      "model_format": "xAI",
+      "model_name": "grok-4-20-reasoning",
+      "model_version": "1"
+    },
+    "grok-4-20-non-reasoning": {
+      "model_format": "xAI",
+      "model_name": "grok-4-20-non-reasoning",
+      "model_version": "1"
+    },
+    "grok-4-1-fast-reasoning": {
+      "model_format": "xAI",
+      "model_name": "grok-4-1-fast-reasoning",
+      "model_version": "1"
+    },
+    "grok-4-1-fast-non-reasoning": {
+      "model_format": "xAI",
+      "model_name": "grok-4-1-fast-non-reasoning",
+      "model_version": "1"
+    },
+    "_comment_deepseek": "=== DeepSeek ===",
+    "DeepSeek-V4-Pro": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V4-Pro",
+      "model_version": "2026-04-23"
+    },
+    "DeepSeek-V4-Flash-0731": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V4-Flash-0731",
+      "model_version": "2026-07-31"
+    },
+    "DeepSeek-V4-Flash": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V4-Flash",
+      "model_version": "2026-04-23"
+    },
+    "DeepSeek-V3.2-Speciale": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V3.2-Speciale",
+      "model_version": "1"
+    },
+    "DeepSeek-V3.2": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V3.2",
+      "model_version": "1"
+    },
+    "DeepSeek-V3.1": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V3.1",
+      "model_version": "1"
+    },
+    "DeepSeek-V3-0324": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-V3-0324",
+      "model_version": "1"
+    },
+    "DeepSeek-R1-0528": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-R1-0528",
+      "model_version": "1"
+    },
+    "DeepSeek-R1": {
+      "model_format": "DeepSeek",
+      "model_name": "DeepSeek-R1",
+      "model_version": "1"
+    },
+    "_comment_meta": "=== Meta Llama ===",
+    "Llama-4-Maverick-17B-128E-Instruct-FP8": {
+      "model_format": "Meta",
+      "model_name": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "model_version": "1"
+    },
+    "Llama-4-Scout-17B-16E-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Llama-4-Scout-17B-16E-Instruct",
+      "model_version": "1"
+    },
+    "Llama-3.3-70B-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Llama-3.3-70B-Instruct",
+      "model_version": "9"
+    },
+    "Llama-3.2-90B-Vision-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Llama-3.2-90B-Vision-Instruct",
+      "model_version": "3"
+    },
+    "Llama-3.2-11B-Vision-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Llama-3.2-11B-Vision-Instruct",
+      "model_version": "2"
+    },
+    "Meta-Llama-3.1-405B-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Meta-Llama-3.1-405B-Instruct",
+      "model_version": "1"
+    },
+    "Meta-Llama-3.1-8B-Instruct": {
+      "model_format": "Meta",
+      "model_name": "Meta-Llama-3.1-8B-Instruct",
+      "model_version": "5"
+    },
+    "_comment_mistral": "=== Mistral AI ===",
+    "Mistral-Large-3": {
+      "model_format": "Mistral AI",
+      "model_name": "Mistral-Large-3",
+      "model_version": "1"
+    },
+    "Mistral-large": {
+      "model_format": "Mistral AI",
+      "model_name": "Mistral-large",
+      "model_version": "1"
+    },
+    "mistral-medium-3-5": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-medium-3-5",
+      "model_version": "1"
+    },
+    "mistral-small-2503": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-small-2503",
+      "model_version": "1"
+    },
+    "Ministral-3B": {
+      "model_format": "Mistral AI",
+      "model_name": "Ministral-3B",
+      "model_version": "1"
+    },
+    "Codestral-2501": {
+      "model_format": "Mistral AI",
+      "model_name": "Codestral-2501",
+      "model_version": "2"
+    },
+    "mistral-document-ai-2512": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-document-ai-2512",
+      "model_version": "1"
+    },
+    "mistral-ocr-4-0": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-ocr-4-0",
+      "model_version": "1"
+    },
+    "_comment_cohere": "=== Cohere ===",
+    "Cohere-command-a-plus-05-2026": {
+      "model_format": "Cohere",
+      "model_name": "Cohere-command-a-plus-05-2026",
+      "model_version": "1"
+    },
+    "cohere-command-a": {
+      "model_format": "Cohere",
+      "model_name": "cohere-command-a",
+      "model_version": "1"
+    },
+    "embed-v-4-0": {
+      "model_format": "Cohere",
+      "model_name": "embed-v-4-0",
+      "model_version": "1"
+    },
+    "Cohere-embed-v3-english": {
+      "model_format": "Cohere",
+      "model_name": "Cohere-embed-v3-english",
+      "model_version": "1"
+    },
+    "Cohere-embed-v3-multilingual": {
+      "model_format": "Cohere",
+      "model_name": "Cohere-embed-v3-multilingual",
+      "model_version": "1"
+    },
+    "Cohere-rerank-v4.0-pro": {
+      "model_format": "Cohere",
+      "model_name": "Cohere-rerank-v4.0-pro",
+      "model_version": "1"
+    },
+    "Cohere-rerank-v4.0-fast": {
+      "model_format": "Cohere",
+      "model_name": "Cohere-rerank-v4.0-fast",
+      "model_version": "1"
+    },
+    "_comment_microsoft": "=== Microsoft (Phi + MAI) ===",
+    "Phi-4": {
+      "model_format": "Microsoft",
+      "model_name": "Phi-4",
+      "model_version": "7"
+    },
+    "Phi-4-reasoning": {
+      "model_format": "Microsoft",
+      "model_name": "Phi-4-reasoning",
+      "model_version": "1"
+    },
+    "Phi-4-multimodal-instruct": {
+      "model_format": "Microsoft",
+      "model_name": "Phi-4-multimodal-instruct",
+      "model_version": "1"
+    },
+    "Phi-4-mini-instruct": {
+      "model_format": "Microsoft",
+      "model_name": "Phi-4-mini-instruct",
+      "model_version": "1"
+    },
+    "Phi-4-mini-reasoning": {
+      "model_format": "Microsoft",
+      "model_name": "Phi-4-mini-reasoning",
+      "model_version": "1"
+    },
+    "MAI-Thinking-1": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Thinking-1",
+      "model_version": "2026-06-01"
+    },
+    "MAI-Image-2.5-Pro": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Image-2.5-Pro",
+      "model_version": "2026-06-19"
+    },
+    "MAI-Image-2.5-Flash": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Image-2.5-Flash",
+      "model_version": "2026-06-02"
+    },
+    "MAI-Image-2.5": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Image-2.5",
+      "model_version": "2026-06-02"
+    },
+    "MAI-Image-2e": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Image-2e",
+      "model_version": "2026-04-09"
+    },
+    "MAI-Image-2": {
+      "model_format": "Microsoft",
+      "model_name": "MAI-Image-2",
+      "model_version": "2026-02-20"
+    },
+    "_comment_bfl": "=== Black Forest Labs (FLUX) ===",
+    "FLUX.2-pro": {
+      "model_format": "Black Forest Labs",
+      "model_name": "FLUX.2-pro",
+      "model_version": "1"
+    },
+    "FLUX.2-flex": {
+      "model_format": "Black Forest Labs",
+      "model_name": "FLUX.2-flex",
+      "model_version": "1"
+    },
+    "FLUX.1-Kontext-pro": {
+      "model_format": "Black Forest Labs",
+      "model_name": "FLUX.1-Kontext-pro",
+      "model_version": "1"
+    },
+    "FLUX-1.1-pro": {
+      "model_format": "Black Forest Labs",
+      "model_name": "FLUX-1.1-pro",
+      "model_version": "1"
+    },
+    "_comment_moonshot": "=== MoonshotAI (Kimi) ===",
+    "Kimi-K2.7-Code": {
+      "model_format": "MoonshotAI",
+      "model_name": "Kimi-K2.7-Code",
+      "model_version": "2026-06-12"
+    },
+    "Kimi-K2.6": {
+      "model_format": "MoonshotAI",
+      "model_name": "Kimi-K2.6",
+      "model_version": "2026-04-20"
+    },
+    "Kimi-K2.5": {
+      "model_format": "MoonshotAI",
+      "model_name": "Kimi-K2.5",
+      "model_version": "1"
+    },
+    "_comment_alibaba": "=== Alibaba (Qwen) ===",
+    "qwen3-32b": {
+      "model_format": "Alibaba",
+      "model_name": "qwen3-32b",
+      "model_version": "1"
+    },
+    "_comment_openai_oss": "=== OpenAI OSS ===",
+    "gpt-oss-20b": {
+      "model_format": "OpenAI-OSS",
+      "model_name": "gpt-oss-20b",
+      "model_version": "11"
+    },
+    "mistral-document-ai-2505": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-document-ai-2505",
+      "model_version": "1"
+    },
+    "mistral-medium-2505": {
+      "model_format": "Mistral AI",
+      "model_name": "mistral-medium-2505",
+      "model_version": "1"
+    },
+    "gpt-4o": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o",
+      "model_version": "2024-11-20"
+    },
+    "gpt-4o-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o-mini",
+      "model_version": "2024-07-18"
+    },
+    "gpt-4o-mini-transcribe": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o-mini-transcribe",
+      "model_version": "2025-12-15"
+    },
+    "gpt-4o-mini-tts": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o-mini-tts",
+      "model_version": "2025-12-15"
+    },
+    "gpt-4o-transcribe": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o-transcribe",
+      "model_version": "2025-03-20"
+    },
+    "gpt-4o-transcribe-diarize": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-4o-transcribe-diarize",
+      "model_version": "2025-10-15"
+    },
+    "gpt-5.6-luna": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.6-luna",
+      "model_version": "2026-07-09"
+    },
+    "gpt-5.6-sol": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.6-sol",
+      "model_version": "2026-07-09"
+    },
+    "gpt-5.6-terra": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-5.6-terra",
+      "model_version": "2026-07-09"
+    },
+    "gpt-chat-latest": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-chat-latest",
+      "model_version": "2026-08-06"
+    },
+    "gpt-image-2": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-image-2",
+      "model_version": "2026-04-21"
+    },
+    "gpt-live-transcribe": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-live-transcribe",
+      "model_version": "2026-07-28"
+    },
+    "gpt-realtime-2": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-2",
+      "model_version": "2026-05-06"
+    },
+    "gpt-realtime-2.1": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-2.1",
+      "model_version": "2026-07-07"
+    },
+    "gpt-realtime-2.1-mini": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-2.1-mini",
+      "model_version": "2026-07-07"
+    },
+    "gpt-realtime-translate": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-translate",
+      "model_version": "2026-05-06"
+    },
+    "gpt-realtime-whisper": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-realtime-whisper",
+      "model_version": "2026-05-06"
+    },
+    "gpt-transcribe": {
+      "model_format": "OpenAI",
+      "model_name": "gpt-transcribe",
+      "model_version": "2026-07-28"
+    },
+    "model-router": {
+      "model_format": "OpenAI",
+      "model_name": "model-router",
+      "model_version": "2025-11-18"
+    },
+    "o3-deep-research": {
+      "model_format": "OpenAI",
+      "model_name": "o3-deep-research",
+      "model_version": "2025-06-26"
+    },
+    "sora-2": {
+      "model_format": "OpenAI",
+      "model_name": "sora-2",
+      "model_version": "2025-12-08"
     }
   },
-
   "request_settings": {
     "timeout": 30,
     "retry_attempts": 3,
     "retry_delay": 1
   },
-
   "dashboard_settings": {
     "default_sku_filter": "GlobalStandard",
     "cache_timeout_minutes": 5,
@@ -302,13 +727,11 @@
     "_regions_note": "Use 0 to include all regions, or provide an array like [\"eastus\", \"swedencentral\"]",
     "regions": 0
   },
-
   "authentication": {
     "_note": "Uses Azure DefaultAzureCredential - ensure you are logged in via 'az login'",
     "method": "DefaultAzureCredential",
     "tenant_id": "OPTIONAL_TENANT_ID_IF_NEEDED"
   },
-
   "email": {
     "_note": "Azure Communication Service email configuration",
     "connection_string": "YOUR_AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING",

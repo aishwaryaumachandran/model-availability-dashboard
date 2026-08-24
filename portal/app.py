@@ -130,8 +130,8 @@ def load_capacity_data():
         return {}
 
 
-def load_capacity_data_with_progress():
-    """Load capacity data with progress display showing which model is being loaded."""
+def load_capacity_data_with_progress(model_names_filter=None):
+    """Load capacity data with progress display, optionally restricted to a subset of models."""
     try:
         config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
         
@@ -152,6 +152,9 @@ def load_capacity_data_with_progress():
         
         models = config.get('models', {})
         model_names = [m for m in models.keys() if not m.startswith('_')]
+        if model_names_filter is not None:
+            allowed = set(model_names_filter)
+            model_names = [m for m in model_names if m in allowed]
         
         all_results = {}
         errors = []
@@ -510,13 +513,129 @@ def send_email_report(raw_data, all_skus, recipients=None, region_filter_metadat
         return False, f"Error sending email: {str(e)}"
 
 
+def get_model_registry():
+    """Return {provider: [model_name, ...]} from config.json, sorted for stable UI."""
+    config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    registry = {}
+    for name, meta in config.get('models', {}).items():
+        if name.startswith('_') or not isinstance(meta, dict):
+            continue
+        provider = meta.get('model_format', 'Unknown')
+        registry.setdefault(provider, []).append(name)
+    for provider in registry:
+        registry[provider].sort()
+    return dict(sorted(registry.items()))
+
+
+def render_model_selector():
+    """Parent filter: pick providers and models before loading capacity data.
+
+    Returns the list of selected model names, or None if the user hasn't submitted yet.
+    """
+    registry = get_model_registry()
+    all_providers = list(registry.keys())
+    total_models = sum(len(v) for v in registry.values())
+
+    if 'selected_models' not in st.session_state:
+        st.session_state.selected_models = None
+        st.session_state.selected_providers = ['OpenAI'] if 'OpenAI' in registry else all_providers[:1]
+
+    # Once user has loaded data, show a compact summary + "Change selection" control.
+    if st.session_state.selected_models is not None:
+        selected = st.session_state.selected_models
+        with st.container():
+            cols = st.columns([6, 1])
+            with cols[0]:
+                st.caption(
+                    f"**Loaded**: {len(selected)} of {total_models} models across "
+                    f"{len(st.session_state.selected_providers)} provider(s): "
+                    f"{', '.join(st.session_state.selected_providers)}"
+                )
+            with cols[1]:
+                if st.button("Change selection", key="change_model_selection"):
+                    st.session_state.selected_models = None
+                    st.session_state.capacity_data_loaded = False
+                    st.session_state.all_results_cache = {}
+                    st.session_state.loading_results = []
+                    st.cache_data.clear()
+                    st.rerun()
+        return selected
+
+    # First-time / re-selection UI.
+    st.markdown('<div class="filter-container">', unsafe_allow_html=True)
+    st.subheader("Model Filter")
+    st.caption(
+        f"Select which providers and models to query. "
+        f"({total_models} models available across {len(all_providers)} providers.)"
+    )
+
+    with st.form("model_selector_form", clear_on_submit=False):
+        provider_labels = [f"{p} ({len(registry[p])})" for p in all_providers]
+        label_to_provider = dict(zip(provider_labels, all_providers))
+        default_provider_labels = [
+            f"{p} ({len(registry[p])})" for p in st.session_state.selected_providers if p in registry
+        ]
+        picked_labels = st.multiselect(
+            "Providers:",
+            options=provider_labels,
+            default=default_provider_labels,
+            help="Providers correspond to Azure `modelFormat` values."
+        )
+        picked_providers = [label_to_provider[l] for l in picked_labels]
+
+        candidate_models = [m for p in picked_providers for m in registry[p]]
+
+        select_all = st.checkbox(
+            "Load all models from the selected providers",
+            value=True,
+            help="Uncheck to narrow the selection to specific models."
+        )
+
+        if select_all:
+            picked_models = candidate_models
+            st.caption(f"{len(picked_models)} model(s) will be loaded.")
+        else:
+            picked_models = st.multiselect(
+                "Models:",
+                options=candidate_models,
+                default=candidate_models,
+                help="Only the checked models will be queried."
+            )
+
+        submitted = st.form_submit_button("Load capacity data", type="primary")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if submitted:
+        if not picked_models:
+            st.warning("Please select at least one model.")
+            return None
+        st.session_state.selected_providers = picked_providers
+        st.session_state.selected_models = picked_models
+        st.session_state.capacity_data_loaded = False
+        st.session_state.all_results_cache = {}
+        st.session_state.loading_results = []
+        st.cache_data.clear()
+        st.rerun()
+
+    return None
+
+
 def main():
     """Main Streamlit application."""
     # Header
     st.markdown('<div class="main-header">Azure AI Model Capacity Dashboard</div>', unsafe_allow_html=True)
-    
-    # Load data with progress display
-    raw_data = load_capacity_data_with_progress()
+
+    # Parent filter: choose providers/models before fetching capacity.
+    selected_models = render_model_selector()
+    if selected_models is None:
+        st.info("Choose providers and models above, then click **Load capacity data** to begin.")
+        return
+
+    # Load data with progress display for the selected models only.
+    raw_data = load_capacity_data_with_progress(model_names_filter=selected_models)
     
     if not raw_data:
         st.error("No capacity data available. Please check your configuration.")

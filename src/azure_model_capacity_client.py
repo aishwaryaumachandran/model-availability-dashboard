@@ -226,7 +226,11 @@ class AzureModelCapacityClient:
         """
         try:
             # Use DefaultAzureCredential following Azure best practices
-            self.credential = DefaultAzureCredential()
+            # Exclude PowerShellCredential to avoid noisy errors when Az module isn't connected
+            # See: https://aka.ms/azsdk/python/identity/powershellcredential/troubleshoot
+            self.credential = DefaultAzureCredential(
+                exclude_powershell_credential=True
+            )
             
             # Test credential by getting a token for Azure Resource Manager
             token = self.credential.get_token("https://management.azure.com/.default")
